@@ -2,26 +2,17 @@ version: '3.7'
 
 services:
   iis:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: docker.io/suvam754/projectwinserver-web-app:latest
     ports:
       - "80:80"
     depends_on:
       - sql-server
-    healthcheck:
-      test: ["CMD", "iisreset", "/status"]
-      interval: 10s
-      timeout: 10s
-      retries: 5
 
   sql-server:
-    image: your-sql-image:tag  # Replace with your SQL Server image and tag
+    image: docker.io/suvam754/projectwinserver-sql-server
+    ports:
+      - "1433:1433"
     environment:
-      SA_PASSWORD: YourSAPassword
+      sa_password: Bintu123
       ACCEPT_EULA: Y
-    healthcheck:
-      test: ["CMD", "sqlcmd", "-S", "localhost", "-U", "sa", "-P", "YourSAPassword", "-Q", "SELECT 1"]
-      interval: 10s
-      timeout: 10s
-      retries: 5
+      attach_dbs: '[{"dbName":"SampleDB","dbFiles":["C:\\temp\\sampledb.mdf","C:\\temp\\sampledb_log.ldf"]}]'
